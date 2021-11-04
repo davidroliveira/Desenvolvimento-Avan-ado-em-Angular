@@ -48,11 +48,12 @@ export class AppComponent implements OnInit {
   minhaObervable(nome: string): Observable<string>{
     return new Observable(subscriber => {
       if (nome === 'David') {
-        subscriber.next('Olá!' + nome);
-        subscriber.next('Olá de novo!' + nome);
+        subscriber.next('Olá! ' + nome);
+        subscriber.next('Olá de novo! ' + nome);
         setTimeout(() => {
-          subscriber.next('Resposta com delay!' + nome);
+          subscriber.next('Resposta com delay! ' + nome);
         }, 5000);
+        subscriber.complete(); /*<<<NÃO ESPERA O setTimeout, JA ENCERRA O OBERVABLE*/ 
       }
       else {
         subscriber.error('Ops deu erro!');
@@ -67,6 +68,7 @@ export class AppComponent implements OnInit {
     // this.minhaPromise('David')
     //   .then(result => console.log(result))
     //   .catch(error => console.log(error));
+
 /*
     this.minhaPromise('José')
       .then(result => console.log(result))
@@ -78,10 +80,32 @@ export class AppComponent implements OnInit {
         result => {
           console.log(result);
         },
-        error => {
-          console.log(error);
+        erro => {
+          console.log(erro);
+        },
+        () => {
+          console.log('Fim!')
         }
       );
+
+    const observer = {
+      next: (valor: any)  => {
+        this.escrever('Next: ' + valor);
+      },
+      error: (erro: any)  => {
+        console.log('Erro: ', erro);
+      },
+      complete: () => {
+        console.log('FIM!');
+      }
+    }
+
+    const observable = this.minhaObervable('David');
+    observable.subscribe(observer);
+    
   }
 
+  escrever(texto: string): void {
+    console.log(texto);
+  }
 }
