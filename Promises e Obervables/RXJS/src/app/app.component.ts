@@ -61,6 +61,40 @@ export class AppComponent implements OnInit {
     })
   }
 
+  usuarioObervable(nome: string, email: string): Observable<Usuario>{
+    return new Observable(subscriber => {
+      if (nome === 'Admin') {
+        
+        let usuario = new Usuario(nome, email)
+
+        setTimeout(() => {
+          subscriber.next(usuario);
+        }, 1000);
+                
+        setTimeout(() => {
+          subscriber.next(usuario);
+        }, 2000);
+                
+        setTimeout(() => {
+          subscriber.next(usuario);
+        }, 3000);
+                
+        setTimeout(() => {
+          subscriber.next(usuario);
+        }, 4000);
+                
+        setTimeout(() => {
+          subscriber.next(usuario);
+          subscriber.complete(); 
+        }, 5000);              
+        
+      }
+      else {
+        subscriber.error('Ops deu erro!');
+      }
+    })
+  }
+
   ngOnInit(): void {
     
     console.clear();
@@ -74,7 +108,7 @@ export class AppComponent implements OnInit {
       .then(result => console.log(result))
       .catch(error => console.log(error));
 */
-
+/*
     this.minhaObervable('David')
       .subscribe(
         result => {
@@ -87,10 +121,11 @@ export class AppComponent implements OnInit {
           console.log('Fim!')
         }
       );
+*/
 
     const observer = {
       next: (valor: any)  => {
-        this.escrever('Next: ' + valor);
+        console.log('Next: ', valor);
       },
       error: (erro: any)  => {
         console.log('Erro: ', erro);
@@ -100,12 +135,34 @@ export class AppComponent implements OnInit {
       }
     }
 
+/*
     const observable = this.minhaObervable('David');
     observable.subscribe(observer);
-    
+*/    
+    const observable = this.usuarioObervable('Admin', 'admin@teste.com');
+    const subscription = observable.subscribe(observer);
+
+    setTimeout(() => {
+      console.log('unsubscribe');
+      subscription.unsubscribe(); //Não chama o complete() do oberver
+      console.log('Conexão fechada: ' + subscription.closed);
+    }, 3500);    
+
   }
 
   escrever(texto: string): void {
     console.log(texto);
   }
+}
+
+export class Usuario {
+
+  nome: string;
+  email: string;
+
+  constructor(nome: string, email: string) {
+    this.nome = nome;
+    this.email = email;      
+  }
+
 }
