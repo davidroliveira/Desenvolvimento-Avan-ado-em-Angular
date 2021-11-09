@@ -30,7 +30,7 @@ Comandos:
 
 npm install - Inicializar 
 
-npm install npm-check-updates -> instala ncu global
+npm install npm-check-updates -> instala ncu
 ncu                           -> vetifica se pacotes estão atualizados
 ncu -u                        -> faz update dos pacotes estão atualizados
 
