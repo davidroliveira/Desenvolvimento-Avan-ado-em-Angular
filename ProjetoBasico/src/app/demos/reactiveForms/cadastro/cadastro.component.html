@@ -12,8 +12,18 @@
                         [ngClass]="{'is-invalid': cadastroForm.get('nome').errors && (cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched)}" />
 
                     <span class="text-danger"
-                        *ngIf="cadastroForm.get('nome').errors && (cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched)">
+                        *ngIf="cadastroForm.get('nome')?.errors?.required && (cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched)">
                         <p>Preencha o campo nome</p>
+                    </span>
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('nome')?.errors?.minlength && (cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched)">
+                        <p>Tamanho mínimo do campo nome</p>
+                    </span>
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('nome')?.errors?.maxlength && (cadastroForm.get('nome').dirty || cadastroForm.get('nome').touched)">
+                        <p>Tamanho maximo do campo nome</p>
                     </span>
                 </div>
             </div>
@@ -21,8 +31,13 @@
             <div class="form-group">
                 <label class="col-md-2 control-label">CPF</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="cpf" type="text" placeholder="CPF (requerido)"
-                        formControlName="cpf" />
+                    <input class="form-control" id="cpf" type="text" placeholder="CPF (requerido)" formControlName="cpf"
+                        cpf [textMask]="{mask: MASKS.cpf.textMask}" />
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('cpf')?.errors?.cpf && (cadastroForm.get('cpf').dirty || cadastroForm.get('cpf').touched)">
+                        <p>CPF Inválido</p>
+                    </span>
                 </div>
             </div>
 
@@ -51,6 +66,16 @@
                 <div class="col-md-10">
                     <input class="form-control" id="senha" type="password" placeholder="Senha (requerido)"
                         formControlName="senha" />
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('senha')?.errors?.required && (cadastroForm.get('senha').dirty || cadastroForm.get('senha').touched)">
+                        <p>Preencha o campo senha</p>
+                    </span>
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('senha')?.errors?.rangeLength && (cadastroForm.get('senha').dirty || cadastroForm.get('senha').touched)">
+                        <p>Tamanho de Senha inválido</p>
+                    </span>
                 </div>
             </div>
 
@@ -59,6 +84,11 @@
                 <div class="col-md-10">
                     <input class="form-control" id="senhaConfirmacao" type="password"
                         placeholder="Confirme a Senha (requerido)" formControlName="senhaConfirmacao" />
+
+                    <span class="text-danger"
+                        *ngIf="cadastroForm.get('senhaConfirmacao')?.errors?.equalTo && (cadastroForm.get('senhaConfirmacao').dirty || cadastroForm.get('senhaConfirmacao').touched)">
+                        <p>Confirmação de Senha é diferente da Senha informada</p>
+                    </span>
                 </div>
             </div>
             <div class="form-group">
